@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useCallback, useContext, useState, useRef} from 'react';
 import {Context} from "../editor/full-editor/context";
 import {Excalidraw} from "@excalidraw/excalidraw"
 import {DEFAULT_EXCALIDRAW_DATA, Excalidraw as ExcalidrawExtension} from "../extensions/excalidraw";
@@ -46,17 +46,22 @@ const ExcalidrawModal = ({editor}: ModalProps) => {
             onSubmit={onSubmit}
             onClose={onClose}
         >
-            <Excalidraw
-                initialData={excalidrawModalState.data?.excalidrawData || DEFAULT_EXCALIDRAW_DATA}
-                onChange={onChange}
-                UIOptions={{
-                    canvasActions: {
-                        export: false,
-                        saveToActiveFile: false,
-                        saveAsImage: false,
-                    },
-                }}
-            />
+            {
+                excalidrawModalState.open && (
+                    <Excalidraw
+                        initialData={excalidrawModalState.data?.excalidrawData || DEFAULT_EXCALIDRAW_DATA}
+                        excalidrawAPI={excalidrawRef}
+                        onChange={onChange}
+                        UIOptions={{
+                            canvasActions: {
+                                export: false,
+                                saveToActiveFile: false,
+                                saveAsImage: false,
+                            },
+                        }}
+                    />
+                )
+            }
         </BaseEditModal>
     );
 };

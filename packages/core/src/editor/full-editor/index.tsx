@@ -1,4 +1,5 @@
 import "../../styles/full-editor.css"
+import "@arco-design/web-react/dist/css/arco.css";
 import 'mac-scrollbar/dist/mac-scrollbar.css';
 import React, {memo, useEffect, useRef} from 'react';
 import {useSetState} from "ahooks";

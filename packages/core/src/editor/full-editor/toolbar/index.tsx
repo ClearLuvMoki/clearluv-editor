@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useContext} from 'react';
+import React, {JSX, memo, useCallback, useContext} from 'react';
 import {isEqualReact} from "@react-hookz/deep-equal";
 import clsx from "clsx"
 import {
@@ -13,13 +13,13 @@ import {
     Undo2
 } from "lucide-react";
 import {Tools} from "@/domains/types/tools";
-import {Context} from "./context";
+import {Context} from "../context";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/popover"
-import {Button} from "@/components/button"
+import {Button} from "@arco-design/web-react"
 import {
     Select,
     SelectContent,
@@ -29,6 +29,7 @@ import {
 } from "@/components/select"
 import {Level} from "@tiptap/extension-heading";
 import ColorPicker from "@/components/color-picker";
+import {StyledContainer} from "./styled";
 
 export const ToolbarIconProps = {
     size: 16
@@ -199,20 +200,20 @@ const Toolbar = memo((props: Props) => {
 
 
     return (
-        <div
+        <StyledContainer
             className={clsx("moki-editor-toolbar", "w-full h-[50px] px-10 flex gap-2 justify-center items-center border-b border-zinc-200", props?.className)}
             style={props?.style}
         >
             <Button
-                variant={"ghost"}
+                icon={<Undo2 {...ToolbarIconProps}/>}
                 disabled={isDisabled("undo")}
                 onClick={() => onAction("undo")}
-            ><Undo2 {...ToolbarIconProps}/></Button>
+            />
             <Button
-                variant={"ghost"}
+                icon={<Redo2 {...ToolbarIconProps}/>}
                 disabled={isDisabled("redo")}
                 onClick={() => onAction("redo")}
-            ><Redo2 {...ToolbarIconProps}/></Button>
+            />
             <Select
                 value={currentHeading()}
                 onValueChange={(data) => {
@@ -271,8 +272,8 @@ const Toolbar = memo((props: Props) => {
             <Popover>
                 <PopoverTrigger>
                     <Button
-                        variant={"ghost"}
-                    ><PaintRoller {...ToolbarIconProps}/></Button>
+                        icon={<PaintRoller {...ToolbarIconProps}/>}
+                    />
                 </PopoverTrigger>
                 <PopoverContent className="w-[278px]">
                     <ColorPicker
@@ -283,8 +284,8 @@ const Toolbar = memo((props: Props) => {
             <Popover>
                 <PopoverTrigger>
                     <Button
-                        variant={"ghost"}
-                    ><Baseline {...ToolbarIconProps}/></Button>
+                        icon={<Baseline {...ToolbarIconProps}/>}
+                    />
                 </PopoverTrigger>
                 <PopoverContent className="w-[278px]">
                     <ColorPicker
@@ -293,7 +294,7 @@ const Toolbar = memo((props: Props) => {
                 </PopoverContent>
             </Popover>
 
-        </div>
+        </StyledContainer>
     );
 }, (prevProps, nextProps) => {
     return isEqualReact(prevProps, nextProps)
