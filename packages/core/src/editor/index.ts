@@ -1,1 +1,0 @@
-export { default as FullEditor } from "./full-editor"
