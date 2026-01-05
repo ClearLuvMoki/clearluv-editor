@@ -1,0 +1,1 @@
+export {Highlight} from '@tiptap/extension-highlight'

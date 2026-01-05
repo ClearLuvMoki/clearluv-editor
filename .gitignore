@@ -1,6 +1,13 @@
-.idea
+# Local
+.DS_Store
+*.local
+*.log*
 
-*-lock.yaml
-**/.DS_Store
-**/dist/
-**/node_modules/
+# Dist
+node_modules
+dist/
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
