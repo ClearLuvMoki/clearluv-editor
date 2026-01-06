@@ -6,15 +6,24 @@ import { Extensions } from "./extensions";
 import type { BaseEditorProps } from "./types";
 
 export function BaseEditor(props?: BaseEditorProps) {
-  const { autofocus, content = "", extensions = [], classNames, onUpdate, children } = props || {};
+  const {
+    autofocus,
+    content = "",
+    extensions = [],
+    contentType,
+    classNames,
+    onUpdate,
+    children,
+  } = props || {};
   const editor = useEditor(
     {
       extensions: Array.from(new Set([...Extensions, ...extensions])),
       autofocus,
       content,
+      contentType,
       onUpdate,
     },
-    [autofocus, content],
+    [autofocus, content, contentType],
   );
 
   const providerValue = useMemo(() => ({ editor }), [editor]);

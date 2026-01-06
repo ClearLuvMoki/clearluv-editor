@@ -17,5 +17,6 @@ export interface BaseEditorProps {
   onUpdate?: (data: EditorEvents["update"]) => void;
   autofocus?: "start" | "end" | "all" | number | boolean | null;
   extensions?: any[];
+  contentType?: "markdown" | undefined;
   children?: ReactNode;
 }

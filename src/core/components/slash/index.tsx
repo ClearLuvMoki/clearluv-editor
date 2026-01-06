@@ -1,11 +1,11 @@
 import clsx from "clsx";
 import { type ReactElement, useMemo } from "react";
-import { Separator } from "react-aria-components";
 import { useSlashDropdownMenu } from "@/components/slash/use-slash-dropdown";
 import { SuggestionMenu } from "@/components/suggestion";
 import type { SuggestionItemProps } from "@/components/suggestion/types";
 import { filterSuggestionItems } from "@/components/suggestion/utils";
 import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import type { SlashMenuConfigProps, SlashProps } from "./types";
 
 export function Slash(props: SlashProps) {
