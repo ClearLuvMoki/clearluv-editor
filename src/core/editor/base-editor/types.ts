@@ -13,7 +13,7 @@ export interface BaseEditorProps {
     root?: React.CSSProperties;
     editor?: React.CSSProperties;
   };
-  content?: string;
+  content?: string | Record<string, any>;
   onUpdate?: (data: EditorEvents["update"]) => void;
   autofocus?: "start" | "end" | "all" | number | boolean | null;
   extensions?: any[];

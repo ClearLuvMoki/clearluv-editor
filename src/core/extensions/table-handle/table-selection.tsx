@@ -1,3 +1,4 @@
+import "./index.css";
 import { FloatingPortal, useFloating } from "@floating-ui/react";
 import type { Node } from "@tiptap/pm/model";
 import type { EditorState, Selection } from "@tiptap/pm/state";
@@ -6,10 +7,10 @@ import type { EditorView } from "@tiptap/pm/view";
 import type { Editor } from "@tiptap/react";
 import { CellSelection, cellAround } from "prosemirror-tables";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { domCellAround, getTable, rectEq } from "@/extensions/table-handle/utils";
-import { useResizeOverlay } from "@/hooks/use-resize-overlay";
 // --- Hooks ---
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
+import { useResizeOverlay } from "./use-resize-overlay";
+import { domCellAround, getTable, rectEq } from "./utils";
 
 export interface TableSelectionOverlayProps {
   editor?: Editor | null;
@@ -22,14 +23,8 @@ export interface TableSelectionOverlayProps {
   onMenuOpenChange?: (isOpen: boolean) => void;
 }
 
-// tl = top-left
-// tr = top-right
-// bl = bottom-left
-// br = bottom-right
 type ResizeHandle = "tl" | "tr" | "bl" | "br" | null;
 
-// if an element’s edge is within 5px of the selection edge,
-// it is treated as aligned.
 const CORNER_DETECTION_TOLERANCE = 5;
 
 const getCellAtCoordinates = (state: EditorState, view: EditorView, x: number, y: number) => {
@@ -476,7 +471,7 @@ export const TableSelectionOverlay: React.FC<TableSelectionOverlayProps> = ({
               position: "absolute",
               width: selectionRect.width,
               height: selectionRect.height,
-              border: `2px solid var(--tt-brand-color-400)`,
+              border: `2px solid var(--brand-color-400)`,
               borderRadius: 2,
               zIndex: 3,
               top: 0,

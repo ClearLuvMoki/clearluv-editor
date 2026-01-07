@@ -1,0 +1,23 @@
+:root {
+  --slash-decoration-bg-color: var(--gray-light-a-100);
+  --slash-decoration-color: var(--gray-light-a-400);
+}
+
+.editor-slash-decoration {
+  background: var(--slash-decoration-bg-color);
+  outline: 5.5px solid var(--slash-decoration-bg-color);
+  margin: 4px 0;
+  display: inline-block;
+
+  &::after {
+    color: var(--slash-decoration-color);
+  }
+  &::before {
+    display: none;
+  }
+  &.is-empty::after {
+    content: attr(data-decoration-content);
+    margin-left: 2px;
+    font-size: 0.9rem;
+  }
+}

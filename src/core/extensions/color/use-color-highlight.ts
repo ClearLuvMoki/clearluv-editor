@@ -2,12 +2,60 @@ import type { Editor } from "@tiptap/core";
 import { useCallback, useEffect, useState } from "react";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-import {
-  canColorHighlight,
-  isColorHighlightActive,
-  removeHighlight,
-  shouldShowButton,
-} from "@/lib/utils";
+import { isMarkInSchema, isNodeTypeSelected } from "@/lib/utils";
+
+export function isColorHighlightActive(editor: Editor | null, highlightColor?: string): boolean {
+  if (!editor || !editor.isEditable) return false;
+  return highlightColor
+    ? editor.isActive("highlight", { color: highlightColor })
+    : editor.isActive("highlight");
+}
+
+export function removeHighlight(editor: Editor | null): boolean {
+  if (!editor || !editor.isEditable) return false;
+  if (!canColorHighlight(editor)) return false;
+
+  return editor.chain().focus().unsetMark("highlight").run();
+}
+
+export function canColorText(editor: Editor | null): boolean {
+  if (!editor || !editor.isEditable) return false;
+  if (!isMarkInSchema("textStyle", editor) || isNodeTypeSelected(editor, ["image"])) return false;
+
+  try {
+    return editor.can().setMark("textStyle", { color: "currentColor" });
+  } catch {
+    return false;
+  }
+}
+
+export function canColorHighlight(editor: Editor | null): boolean {
+  if (!editor || !editor.isEditable) return false;
+  if (!isMarkInSchema("highlight", editor) || isNodeTypeSelected(editor, ["image"])) return false;
+
+  return editor.can().setMark("highlight");
+}
+
+export function isColorTextActive(editor: Editor | null, textColor: string): boolean {
+  if (!editor || !editor.isEditable) return false;
+  return editor.isActive("textStyle", { color: textColor });
+}
+
+export function shouldShowButton(props: {
+  editor: Editor | null;
+  hideWhenUnavailable: boolean;
+}): boolean {
+  const { editor, hideWhenUnavailable } = props;
+
+  if (!editor || !editor.isEditable) return false;
+  if (!isMarkInSchema("textStyle", editor)) return false;
+
+  if (hideWhenUnavailable && !editor.isActive("code")) {
+    return canColorText(editor);
+  }
+
+  return true;
+}
 
 export interface UseColorHighlightConfig {
   editor?: Editor | null;

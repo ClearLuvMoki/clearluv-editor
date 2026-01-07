@@ -4,128 +4,1426 @@ const App = () => {
   return (
     <div className="content">
       <NotionEditor
-        content={`
-        # A demo of \`react-markdown\`
-
-\`react-markdown\` is a markdown component for React.
-
-👉 Changes are re-rendered as you type.
-
-👈 Try writing some markdown on the left.
-
-## Overview
-
-* Follows [CommonMark](https://commonmark.org)
-* Optionally follows [GitHub Flavored Markdown](https://github.github.com/gfm/)
-* Renders actual React elements instead of using \`dangerouslySetInnerHTML\`
-* Lets you define your own components (to render \`MyHeading\` instead of \`'h1'\`)
-* Has a lot of plugins
-
-## Contents
-
-Here is an example of a plugin in action
-([\`remark-toc\`](https://github.com/remarkjs/remark-toc)).
-**This section is replaced by an actual table of contents**.
-
-## Syntax highlighting
-
-Here is an example of a plugin to highlight code:
-[\`rehype-starry-night\`](https://github.com/rehypejs/rehype-starry-night).
-
-\`\`\`javascript
-import React from 'react'
-import ReactDom from 'react-dom'
-import {MarkdownHooks} from 'react-markdown'
-import rehypeStarryNight from 'rehype-starry-night'
-
-const markdown = \`
-# Your markdown here
-\`
-
-ReactDom.render(
-  <MarkdownHooks rehypePlugins={[rehypeStarryNight]}>{markdown}</MarkdownHooks>,
-  document.querySelector('#content')
-)
-\`\`\`
-
-Pretty neat, eh?
-
-## GitHub flavored markdown (GFM)
-
-For GFM, you can *also* use a plugin:
-[\`remark-gfm\`](https://github.com/remarkjs/react-markdown#use).
-It adds support for GitHub-specific extensions to the language:
-tables, strikethrough, tasklists, and literal URLs.
-
-These features **do not work by default**.
-👆 Use the toggle above to add the plugin.
-
-| Feature    | Support              |
-| ---------: | :------------------- |
-| CommonMark | 100%                 |
-| GFM        | 100% w/ \`remark-gfm\` |
-
-~~strikethrough~~
-
-* [ ] task list
-* [x] checked item
-
-https://example.com
-
-## HTML in markdown
-
-⚠️ HTML in markdown is quite unsafe, but if you want to support it, you can
-use [\`rehype-raw\`](https://github.com/rehypejs/rehype-raw).
-You should probably combine it with
-[\`rehype-sanitize\`](https://github.com/rehypejs/rehype-sanitize).
-
-<blockquote>
-  👆 Use the toggle above to add the plugin.
-</blockquote>
-
-## Components
-
-You can pass components to change things:
-
-\`\`\`javascript
-import React from 'react'
-import ReactDom from 'react-dom'
-import Markdown from 'react-markdown'
-import MyFancyRule from './components/my-fancy-rule.js'
-
-const markdown = \`
-# Your markdown here
-\`
-
-ReactDom.render(
-  <Markdown
-    components={{
-      // Use h2s instead of h1s
-      h1: 'h2',
-      // Use a component instead of hrs
-      hr(props) {
-        const {node, ...rest} = props
-        return <MyFancyRule {...rest} />
-      }
-    }}
-  >
-    {markdown}
-  </Markdown>,
-  document.querySelector('#content')
-)
-\`\`\`
-
-## More info?
-
-Much more info is available in the
-[readme on GitHub](https://github.com/remarkjs/react-markdown)!
-
-***
-
-A component by [Espen Hovlandsdal](https://espen.codes/)
-      `}
+        content={{
+          type: "doc",
+          content: [
+            {
+              type: "heading",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+                level: 1,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Welcome to Notion-like template ",
+                },
+                {
+                  type: "emoji",
+                  attrs: {
+                    name: "sparkles",
+                  },
+                },
+              ],
+            },
+            {
+              type: "blockquote",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+              },
+              content: [
+                {
+                  type: "paragraph",
+                  attrs: {
+                    nodeTextAlign: null,
+                    nodeVerticalAlign: null,
+                  },
+                  content: [
+                    {
+                      type: "emoji",
+                      attrs: {
+                        name: "love_letter",
+                      },
+                    },
+                    {
+                      type: "text",
+                      marks: [
+                        {
+                          type: "bold",
+                        },
+                      ],
+                      text: " Invite your colleagues to make this fun! ",
+                    },
+                    {
+                      type: "hardBreak",
+                    },
+                    {
+                      type: "text",
+                      text: "Just copy the URL from your browser and share it – everyone with the link can join in and collaborate in real time.",
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Start writing your thoughts here … ",
+                },
+                {
+                  type: "emoji",
+                  attrs: {
+                    name: "pencil",
+                  },
+                },
+                {
+                  type: "text",
+                  text: " ",
+                },
+                {
+                  type: "hardBreak",
+                },
+                {
+                  type: "text",
+                  text: "Try some ",
+                },
+                {
+                  type: "text",
+                  marks: [
+                    {
+                      type: "bold",
+                    },
+                  ],
+                  text: "Markdown:",
+                },
+              ],
+            },
+            {
+              type: "codeBlock",
+              attrs: {
+                language: "auto",
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "# Headings\n- Lists\n> Quotes\n`Inline code`",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Or type ",
+                },
+                {
+                  type: "text",
+                  marks: [
+                    {
+                      type: "code",
+                    },
+                  ],
+                  text: "/",
+                },
+                {
+                  type: "text",
+                  text: " to open the command menu and discover blocks, formatting, and hidden features.",
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+                level: 1,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Make it yours",
+                },
+              ],
+            },
+            {
+              type: "bulletList",
+              content: [
+                {
+                  type: "listItem",
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "bold",
+                            },
+                          ],
+                          text: "Select text",
+                        },
+                        {
+                          type: "text",
+                          text: " to reveal a floating toolbar: ",
+                        },
+                        {
+                          type: "hardBreak",
+                        },
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "italic",
+                            },
+                          ],
+                          text: "Quickly italicize, ",
+                        },
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "textStyle",
+                              attrs: {
+                                color: "var(--tt-color-text-blue)",
+                                fontFamily: "",
+                              },
+                            },
+                            {
+                              type: "italic",
+                            },
+                          ],
+                          text: "color",
+                        },
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "italic",
+                            },
+                          ],
+                          text: ", add ",
+                        },
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "link",
+                              attrs: {
+                                href: "https://tiptap.dev/docs/ui-components/getting-started/overview",
+                                target: "_blank",
+                                rel: "noopener noreferrer nofollow",
+                                class: null,
+                              },
+                            },
+                            {
+                              type: "italic",
+                            },
+                          ],
+                          text: "links",
+                        },
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "italic",
+                            },
+                          ],
+                          text: ", or ",
+                        },
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "italic",
+                            },
+                            {
+                              type: "highlight",
+                              attrs: {
+                                color: "var(--tt-color-highlight-green)",
+                              },
+                            },
+                          ],
+                          text: "highlight text",
+                        },
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "italic",
+                            },
+                          ],
+                          text: " just as you're used to..",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "listItem",
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "bold",
+                            },
+                          ],
+                          text: "Hover near any block",
+                        },
+                        {
+                          type: "text",
+                          text: " to reveal the context handle ",
+                        },
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "code",
+                            },
+                          ],
+                          text: "⠿",
+                        },
+                        {
+                          type: "hardBreak",
+                        },
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "italic",
+                            },
+                          ],
+                          text: "Click to open the context menu (duplicate, delete, reset formatting, and more) or simply drag to move your content anywhere you like!",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "listItem",
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          text: "Mention teammates with ",
+                        },
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "code",
+                            },
+                          ],
+                          text: "@",
+                        },
+                        {
+                          type: "text",
+                          text: " and add some fun with emoji ",
+                        },
+                        {
+                          type: "text",
+                          marks: [
+                            {
+                              type: "code",
+                            },
+                          ],
+                          text: ":",
+                        },
+                        {
+                          type: "text",
+                          text: "  ",
+                        },
+                        {
+                          type: "emoji",
+                          attrs: {
+                            name: "hooray",
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "listItem",
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          text: "Switch between ",
+                        },
+                        {
+                          type: "emoji",
+                          attrs: {
+                            name: "sun",
+                          },
+                        },
+                        {
+                          type: "text",
+                          text: " light and ",
+                        },
+                        {
+                          type: "emoji",
+                          attrs: {
+                            name: "new_moon",
+                          },
+                        },
+                        {
+                          type: "text",
+                          text: " dark mode – whatever fits your mood.",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "blockquote",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+              },
+              content: [
+                {
+                  type: "paragraph",
+                  attrs: {
+                    nodeTextAlign: null,
+                    nodeVerticalAlign: null,
+                  },
+                  content: [
+                    {
+                      type: "text",
+                      marks: [
+                        {
+                          type: "bold",
+                        },
+                      ],
+                      text: "Need a spark? ",
+                    },
+                    {
+                      type: "emoji",
+                      attrs: {
+                        name: "sparkles",
+                      },
+                    },
+                    {
+                      type: "text",
+                      marks: [
+                        {
+                          type: "bold",
+                        },
+                      ],
+                      text: " ",
+                    },
+                    {
+                      type: "hardBreak",
+                    },
+                    {
+                      type: "text",
+                      text: "Summon the AI Assistant with ",
+                    },
+                    {
+                      type: "text",
+                      marks: [
+                        {
+                          type: "code",
+                        },
+                      ],
+                      text: "/ask ai",
+                    },
+                    {
+                      type: "text",
+                      text: " from the context menu, or by selecting text and choosing ",
+                    },
+                    {
+                      type: "text",
+                      marks: [
+                        {
+                          type: "code",
+                        },
+                      ],
+                      text: "Improve",
+                    },
+                    {
+                      type: "text",
+                      text: ".",
+                    },
+                    {
+                      type: "hardBreak",
+                    },
+                    {
+                      type: "text",
+                      text: "Polish your writing, or try a ready-made prompt—the AI menu appears with helpful suggestions.",
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+                level: 3,
+              },
+              content: [
+                {
+                  type: "emoji",
+                  attrs: {
+                    name: "white_check_mark",
+                  },
+                },
+                {
+                  type: "text",
+                  marks: [
+                    {
+                      type: "bold",
+                    },
+                  ],
+                  text: " ",
+                },
+                {
+                  type: "text",
+                  text: "Interactive Tables Included",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "This template comes with the full-featured table component. Click row or column handles for sorting and formatting, use the extend buttons (+ icons) to add rows or columns, drag and drop to reorder rows, and select cells to format or merge content.",
+                },
+              ],
+            },
+            {
+              type: "table",
+              content: [
+                {
+                  type: "tableRow",
+                  content: [
+                    {
+                      type: "tableHeader",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [154],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Alice Johnson",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableHeader",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [185],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Senior Developer",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableHeader",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [154],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Engineering",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableHeader",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [156],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "San Francisco",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "tableRow",
+                  content: [
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [154],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Name",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [185],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Role",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [154],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Department",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [156],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Location",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "tableRow",
+                  content: [
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [154],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Bob Smith",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [185],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Product Manager",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [154],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Product",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [156],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "New York",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "tableRow",
+                  content: [
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [154],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Carol White",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [185],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "UX Designer",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [154],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Design",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [156],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "London",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "tableRow",
+                  content: [
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [154],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "David Chen",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [185],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Data Analyst",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [154],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Analytics",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      type: "tableCell",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                        colspan: 1,
+                        rowspan: 1,
+                        colwidth: [156],
+                      },
+                      content: [
+                        {
+                          type: "paragraph",
+                          attrs: {
+                            nodeTextAlign: null,
+                            nodeVerticalAlign: null,
+                          },
+                          content: [
+                            {
+                              type: "text",
+                              text: "Remote",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+                level: 2,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Checklist",
+                },
+              ],
+            },
+            {
+              type: "taskList",
+              content: [
+                {
+                  type: "taskItem",
+                  attrs: {
+                    checked: true,
+                  },
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          text: "Read up to this point",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "taskItem",
+                  attrs: {
+                    checked: false,
+                  },
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          text: "Try a slash command",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "taskItem",
+                  attrs: {
+                    checked: false,
+                  },
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          text: "Mention someone",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "taskItem",
+                  attrs: {
+                    checked: false,
+                  },
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          text: "Use the floating toolbar",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "taskItem",
+                  attrs: {
+                    checked: false,
+                  },
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          text: "Add a color highlight",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "taskItem",
+                  attrs: {
+                    checked: false,
+                  },
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          text: "Explore the context menu & drag blocks",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "taskItem",
+                  attrs: {
+                    checked: false,
+                  },
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          text: "Ask the AI for help",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+                level: 1,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Developer quickstart",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Ready to build your own editor? Just run:",
+                },
+              ],
+            },
+            {
+              type: "codeBlock",
+              attrs: {
+                language: "auto",
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "npx @tiptap/cli init",
+                },
+              ],
+            },
+            {
+              type: "blockquote",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+              },
+              content: [
+                {
+                  type: "paragraph",
+                  attrs: {
+                    nodeTextAlign: null,
+                    nodeVerticalAlign: null,
+                  },
+                  content: [
+                    {
+                      type: "text",
+                      marks: [
+                        {
+                          type: "bold",
+                        },
+                      ],
+                      text: "Did you know? ",
+                    },
+                    {
+                      type: "hardBreak",
+                    },
+                    {
+                      type: "text",
+                      text: "Many features here are powered by open-source Tiptap UI Components. Some advanced tools – like the AI Assistant, advanced color palettes, or context menus – are exclusive to paid users. ",
+                    },
+                    {
+                      type: "hardBreak",
+                    },
+                    {
+                      type: "hardBreak",
+                    },
+                    {
+                      type: "text",
+                      text: "Unlock even more possibilities by ",
+                    },
+                    {
+                      type: "text",
+                      marks: [
+                        {
+                          type: "link",
+                          attrs: {
+                            href: "https://tiptap.dev/pricing",
+                            target: "_blank",
+                            rel: "noopener noreferrer nofollow",
+                            class: null,
+                          },
+                        },
+                      ],
+                      text: "upgrading your plan",
+                    },
+                    {
+                      type: "text",
+                      text: "!",
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+                level: 3,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "Short description",
+                },
+              ],
+            },
+            {
+              type: "bulletList",
+              content: [
+                {
+                  type: "listItem",
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          text: "Content blocks = Node Components",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: "listItem",
+                  content: [
+                    {
+                      type: "paragraph",
+                      attrs: {
+                        nodeTextAlign: null,
+                        nodeVerticalAlign: null,
+                      },
+                      content: [
+                        {
+                          type: "text",
+                          text: "Toolbars, menus, and buttons = UI Components",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "heading",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+                level: 2,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "P.S.",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              attrs: {
+                nodeTextAlign: null,
+                nodeVerticalAlign: null,
+              },
+              content: [
+                {
+                  type: "text",
+                  text: "You’re using the Notion-like template, available for paid users.",
+                },
+              ],
+            },
+          ],
+        }}
+        contentType={"markdown"}
         onUpdate={({ editor }) => {
           console.log(editor.getJSON());
+          // console.log(editor);
         }}
       />
     </div>

@@ -1,12 +1,12 @@
 import { DragContextMenu } from "@/components/drag-context-menu";
+import { TableCellHandleMenu } from "@/components/drop-menu/table-cell-handle";
 import { Slash } from "@/components/slash";
-import { TableCellHandleMenu } from "@/components/table-cell-handle-menu";
 import { BaseEditor } from "@/editor";
 import {
+  BlockCode,
   Blockquote,
   BulletList,
   Code,
-  CodeBlock,
   Dropcursor,
   Emoji,
   HardBreak,
@@ -24,7 +24,7 @@ import {
   TrailingNode,
   UiState,
 } from "@/extensions";
-import { TableSelectionOverlay } from "@/nodes/table-selection";
+import { TableSelectionOverlay } from "@/extensions/table-handle/table-selection";
 import type { NotionEditorProps } from "./types";
 
 export function NotionEditor(props?: NotionEditorProps) {
@@ -44,7 +44,7 @@ export function NotionEditor(props?: NotionEditorProps) {
         TaskList,
         TaskItem,
         Link,
-        CodeBlock,
+        BlockCode,
         History,
         HardBreak,
         TrailingNode,

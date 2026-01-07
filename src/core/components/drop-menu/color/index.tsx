@@ -1,7 +1,6 @@
 import { isEqual } from "@react-hookz/deep-equal";
 import { CaseSensitive, PaintBucket } from "lucide-react";
 import { memo } from "react";
-import { HIGHLIGHT_COLORS, TEXT_COLORS } from "@/components/color-menu/constants";
 import {
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -11,8 +10,8 @@ import {
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { useColorHighlight } from "@/hooks/use-color-highlight";
-import { useColorText } from "@/hooks/use-color-text";
+import { useColorHighlight, useColorText } from "@/extensions/color";
+import { HIGHLIGHT_COLORS, TEXT_COLORS } from "./constants";
 
 const TextColor = memo(
   ({ label, value }: { label: string; value: string }) => {
@@ -57,7 +56,7 @@ const HighlightColor = memo(
   },
 );
 
-export function ColorAction() {
+export function DropdownColor() {
   return (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>

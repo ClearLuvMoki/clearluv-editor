@@ -9,22 +9,15 @@ import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
 
 export interface SlashCommandTriggerButtonProps
   extends Omit<any, "type">,
-    UseSlashCommandTriggerConfig {
-  text?: string;
-  showShortcut?: boolean;
-}
+    UseSlashCommandTriggerConfig {}
 
 export function SlashAction({
   editor: providedEditor,
   node,
   nodePos,
-  text,
   trigger = "/",
   hideWhenUnavailable = false,
   onTriggered,
-  showShortcut = false,
-  children,
-  ...buttonProps
 }: SlashCommandTriggerButtonProps) {
   const { editor } = useTiptapEditor(providedEditor);
 
@@ -52,7 +45,7 @@ export function SlashAction({
 
   return (
     //   @ts-ignore
-    <Button variant={"ghost"} size="icon-sm" onClick={handleClick}>
+    <Button variant={"ghost"} size="icon-sm" onClick={handleClick} style={{ width: 20 }}>
       <Plus />
     </Button>
   );

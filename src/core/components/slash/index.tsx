@@ -1,3 +1,4 @@
+import "./index.css";
 import clsx from "clsx";
 import { type ReactElement, useMemo } from "react";
 import { useSlashDropdownMenu } from "@/components/slash/use-slash-dropdown";
@@ -15,9 +16,9 @@ export function Slash(props: SlashProps) {
   return (
     <SuggestionMenu
       char="/"
-      pluginKey="slashDropdownMenu"
-      decorationClass="editor-slash-decoration rounded-xs"
+      pluginKey="moki-slash-dropdown-menu"
       decorationContent="Filter..."
+      selector="moki-slash-dropdown-menu"
       items={({ query, editor }) => filterSuggestionItems(getSlashMenuItems(editor), query)}
       {...restProps}
     >
@@ -89,7 +90,6 @@ const List = ({
       groups[groupLabel].items.push(item);
       groups[groupLabel].indices.push(index);
     });
-    console.log(groups, "groups");
 
     Object.entries(groups).forEach(([groupLabel, groupData], groupIndex) => {
       if (groupIndex > 0) {
@@ -136,7 +136,7 @@ const List = ({
         maxHeight: "var(--suggestion-menu-max-height)",
       }}
     >
-      <CardContent className="w-50 p-0 select-none">{renderedItems}</CardContent>
+      <CardContent className="w-50 p-0 select-none overflow-auto">{renderedItems}</CardContent>
     </Card>
   );
 };

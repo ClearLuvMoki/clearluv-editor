@@ -1,6 +1,6 @@
+import { useCodeBlock } from "@/extensions/block-code";
 import { useBlockquote } from "@/extensions/block-quote";
 import { useList } from "@/extensions/bullet-list";
-import { useCodeBlock } from "@/extensions/code-block";
 import { useHeading } from "@/extensions/heading";
 import { useText } from "@/extensions/text";
 

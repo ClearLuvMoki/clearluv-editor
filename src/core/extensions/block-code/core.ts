@@ -7,8 +7,8 @@ import { Braces } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
 import { canToggleCodeBlock, isNodeInSchema, toggleCodeBlock } from "@/lib/utils";
-import CodeBlockNode from "@/nodes/code-block";
 import { LowlightPlugin } from "@/plugin/lowlight";
+import { BlockCodeNode } from "./block-code-node";
 
 const lowlight = createLowlight(all);
 
@@ -18,7 +18,7 @@ interface CodeBlockLowlightOptions {
   maxHighlightLineNumber?: number;
 }
 
-export const CodeBlock = BuiltInCodeBlock.extend<CodeBlockLowlightOptions>({
+export const BlockCode = BuiltInCodeBlock.extend<CodeBlockLowlightOptions>({
   name: "codeBlock",
   draggable: true,
 
@@ -32,7 +32,7 @@ export const CodeBlock = BuiltInCodeBlock.extend<CodeBlockLowlightOptions>({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(CodeBlockNode);
+    return ReactNodeViewRenderer(BlockCodeNode);
   },
 
   addKeyboardShortcuts() {

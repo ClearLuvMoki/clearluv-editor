@@ -10,7 +10,7 @@ export interface DuplicateButtonProps
   showShortcut?: boolean;
 }
 
-export const DuplicateAction = ({
+export const DropdownDuplicate = ({
   editor: providedEditor,
   text,
   hideWhenUnavailable = false,

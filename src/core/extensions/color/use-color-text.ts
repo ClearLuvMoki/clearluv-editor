@@ -2,7 +2,7 @@ import type { Editor } from "@tiptap/core";
 import { useCallback, useEffect, useState } from "react";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-import { canColorText, isColorTextActive, shouldShowButton } from "@/lib/utils";
+import { canColorText, isColorTextActive, shouldShowButton } from "./use-color-highlight";
 
 export interface UseColorTextConfig {
   editor?: Editor | null;

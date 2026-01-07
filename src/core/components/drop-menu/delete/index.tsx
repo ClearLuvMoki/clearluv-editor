@@ -8,7 +8,7 @@ export interface Props extends Omit<ComponentProps<"button">, "type">, UseDelete
   showShortcut?: boolean;
 }
 
-export const DeleteAction = ({
+export const DropdownDelete = ({
   editor: providedEditor,
   text,
   hideWhenUnavailable = false,

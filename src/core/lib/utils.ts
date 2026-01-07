@@ -2,8 +2,8 @@ import { type Editor, findParentNodeClosestToPos, type NodeWithPos } from "@tipt
 import type { Level } from "@tiptap/extension-heading";
 import type { Node as PMNode, Node as TiptapNode } from "@tiptap/pm/model";
 import { NodeSelection, TextSelection, type Transaction } from "@tiptap/pm/state";
-import { CellSelection, cellAround } from "prosemirror-tables";
 import { type ClassValue, clsx } from "clsx";
+import { CellSelection, cellAround } from "prosemirror-tables";
 import { twMerge } from "tailwind-merge";
 import type { ListType } from "@/extensions/bullet-list";
 
@@ -89,59 +89,6 @@ export function isNodeTypeSelected(editor: Editor | null, types: string[] = []):
   }
 
   return false;
-}
-
-export function canColorText(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false;
-  if (!isMarkInSchema("textStyle", editor) || isNodeTypeSelected(editor, ["image"])) return false;
-
-  try {
-    return editor.can().setMark("textStyle", { color: "currentColor" });
-  } catch {
-    return false;
-  }
-}
-
-export function canColorHighlight(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false;
-  if (!isMarkInSchema("highlight", editor) || isNodeTypeSelected(editor, ["image"])) return false;
-
-  return editor.can().setMark("highlight");
-}
-
-export function isColorTextActive(editor: Editor | null, textColor: string): boolean {
-  if (!editor || !editor.isEditable) return false;
-  return editor.isActive("textStyle", { color: textColor });
-}
-
-export function isColorHighlightActive(editor: Editor | null, highlightColor?: string): boolean {
-  if (!editor || !editor.isEditable) return false;
-  return highlightColor
-    ? editor.isActive("highlight", { color: highlightColor })
-    : editor.isActive("highlight");
-}
-
-export function removeHighlight(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false;
-  if (!canColorHighlight(editor)) return false;
-
-  return editor.chain().focus().unsetMark("highlight").run();
-}
-
-export function shouldShowButton(props: {
-  editor: Editor | null;
-  hideWhenUnavailable: boolean;
-}): boolean {
-  const { editor, hideWhenUnavailable } = props;
-
-  if (!editor || !editor.isEditable) return false;
-  if (!isMarkInSchema("textStyle", editor)) return false;
-
-  if (hideWhenUnavailable && !editor.isActive("code")) {
-    return canColorText(editor);
-  }
-
-  return true;
 }
 
 export function findNodeAtPosition(editor: Editor, position: number) {
@@ -243,47 +190,6 @@ export function canToggleText(editor: Editor | null, turnInto: boolean = true): 
   }
 }
 
-export function canToggleHeading(
-  editor: Editor | null,
-  level?: Level,
-  turnInto: boolean = true,
-): boolean {
-  if (!editor || !editor.isEditable) return false;
-  if (!isNodeInSchema("heading", editor) || isNodeTypeSelected(editor, ["image"])) return false;
-
-  if (!turnInto) {
-    return level ? editor.can().setNode("heading", { level }) : editor.can().setNode("heading");
-  }
-
-  try {
-    const view = editor.view;
-    const state = view.state;
-    const selection = state.selection;
-
-    if (selection.empty || selection instanceof TextSelection) {
-      const pos = findNodePosition({
-        editor,
-        node: state.selection.$anchor.node(1),
-      })?.pos;
-      if (!isValidPosition(pos)) return false;
-    }
-
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export function isHeadingActive(editor: Editor | null, level?: Level | Level[]): boolean {
-  if (!editor || !editor.isEditable) return false;
-
-  if (Array.isArray(level)) {
-    return level.some((l) => editor.isActive("heading", { level: l }));
-  }
-
-  return level ? editor.isActive("heading", { level }) : editor.isActive("heading");
-}
-
 export function toggleParagraph(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false;
   if (!canToggleText(editor)) return false;
@@ -324,63 +230,6 @@ export function toggleParagraph(editor: Editor | null): boolean {
     if (!editor.isActive("paragraph")) {
       chain.setNode("paragraph").run();
     }
-
-    editor.chain().focus().selectTextblockEnd().run();
-
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export function toggleHeading(editor: Editor | null, level: Level | Level[]): boolean {
-  if (!editor || !editor.isEditable) return false;
-
-  const levels = Array.isArray(level) ? level : [level];
-  const toggleLevel = levels.find((l) => canToggleHeading(editor, l));
-
-  if (!toggleLevel) return false;
-
-  try {
-    const view = editor.view;
-    let state = view.state;
-    let tr = state.tr;
-
-    // No selection, find the cursor position
-    if (state.selection.empty || state.selection instanceof TextSelection) {
-      const pos = findNodePosition({
-        editor,
-        node: state.selection.$anchor.node(1),
-      })?.pos;
-      if (!isValidPosition(pos)) return false;
-
-      tr = tr.setSelection(NodeSelection.create(state.doc, pos));
-      view.dispatch(tr);
-      state = view.state;
-    }
-
-    const selection = state.selection;
-    let chain = editor.chain().focus();
-
-    // Handle NodeSelection
-    if (selection instanceof NodeSelection) {
-      const firstChild = selection.node.firstChild?.firstChild;
-      const lastChild = selection.node.lastChild?.lastChild;
-
-      const from = firstChild ? selection.from + firstChild.nodeSize : selection.from + 1;
-
-      const to = lastChild ? selection.to - lastChild.nodeSize : selection.to - 1;
-
-      chain = chain.setTextSelection({ from, to }).clearNodes();
-    }
-
-    const isActive = levels.some((l) => editor.isActive("heading", { level: l }));
-
-    const toggle = isActive
-      ? chain.setNode("paragraph")
-      : chain.setNode("heading", { level: toggleLevel });
-
-    toggle.run();
 
     editor.chain().focus().selectTextblockEnd().run();
 

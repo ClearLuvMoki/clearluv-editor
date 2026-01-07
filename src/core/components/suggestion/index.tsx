@@ -12,6 +12,7 @@ import { calculateStartPosition } from "@/components/suggestion/utils";
 import { useFloatingElement } from "@/hooks/use-floating-element";
 import { useMenuNavigation } from "@/hooks/use-menu-navigation";
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
+import { cn } from "@/lib/utils";
 import type { SuggestionItemProps } from "./types";
 
 interface Props<T> extends Omit<SuggestionOptions<SuggestionItemProps<T>>, "pluginKey" | "editor"> {
@@ -68,6 +69,7 @@ export function SuggestionMenu({
                 ? Math.min(maxHeight, availableHeight)
                 : availableHeight;
 
+              console.log(maxHeightValue, "maxHeightValue");
               elements.floating.style.setProperty(
                 "--suggestion-menu-max-height",
                 `${maxHeightValue}px`,
@@ -198,6 +200,10 @@ export function SuggestionMenu({
           },
         };
       },
+      decorationClass: cn(
+        "editor-slash-decoration rounded-xs",
+        internalSuggestionPropsRef.current?.decorationClass,
+      ),
       ...internalSuggestionPropsRef.current,
     });
     editor.registerPlugin(suggestion);

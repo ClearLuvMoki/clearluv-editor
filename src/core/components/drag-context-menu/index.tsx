@@ -1,13 +1,15 @@
+import "./index.css";
 import { offset } from "@floating-ui/react";
 import DragHandle from "@tiptap/extension-drag-handle-react";
 import type { Node as TiptapNode } from "@tiptap/pm/model";
-import { GripVertical, Plus } from "lucide-react";
+import { GripVertical } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ColorAction } from "@/components/drag-context-menu/color-action";
-import { DeleteAction } from "@/components/drag-context-menu/delete-action";
-import { DuplicateAction } from "@/components/drag-context-menu/duplicate-action";
 import { SlashAction } from "@/components/drag-context-menu/slash-action";
-import { TurnToAction } from "@/components/drag-context-menu/turnto-action";
+
+import { DropdownColor } from "@/components/drop-menu/color";
+import { DropdownDelete } from "@/components/drop-menu/delete";
+import { DropdownDuplicate } from "@/components/drop-menu/duplicate";
+import { DropdownTurnInto } from "@/components/drop-menu/turn-into";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -85,11 +87,12 @@ export function DragContextMenu({
       onElementDragEnd={onElementDragEnd}
       {...props}
     >
-      <div className="flex gap-1 items-center w-[80px]">
+      <div className="flex gap-1 items-center justify-end w-15 ">
         <SlashAction />
         <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
             <Button
+              style={{ width: 20 }}
               variant={"ghost"}
               size="icon-sm"
               onPointerDownCapture={(e) => {
@@ -102,11 +105,11 @@ export function DragContextMenu({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="start">
             <DropdownMenuLabel className="text-xs text-gray-400">Text</DropdownMenuLabel>
-            {hasColorActions && <ColorAction />}
-            {hasTransformActions && <TurnToAction />}
+            {hasColorActions && <DropdownColor />}
+            {hasTransformActions && <DropdownTurnInto />}
             {hasAnyActionGroups && <Separator orientation="horizontal" />}
-            <DuplicateAction text="Duplicate node" />
-            <DeleteAction text="Delete node" />
+            <DropdownDuplicate text="Duplicate node" />
+            <DropdownDelete text="Delete node" />
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

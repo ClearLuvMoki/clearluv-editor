@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useNodeTransformActions } from "@/hooks/use-node-transform-actions";
 
-export function TurnToAction() {
+export function DropdownTurnInto() {
   const actions = useNodeTransformActions();
   return (
     <DropdownMenuSub>

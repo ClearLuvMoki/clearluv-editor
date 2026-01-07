@@ -1,9 +1,10 @@
 import type { Editor } from "@tiptap/core";
 import { Pilcrow } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { shouldShowButton } from "@/extensions/color/use-color-highlight";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-import { canToggleText, isParagraphActive, shouldShowButton, toggleParagraph } from "@/lib/utils";
+import { canToggleText, isParagraphActive, toggleParagraph } from "@/lib/utils";
 
 export { Text } from "@tiptap/extension-text";
 

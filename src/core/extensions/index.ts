@@ -1,8 +1,8 @@
+export { BlockCode } from "./block-code";
 export { Blockquote } from "./block-quote";
 export { Bold } from "./bold";
 export { BulletList } from "./bullet-list";
 export { Code } from "./code";
-export { CodeBlock } from "./code-block";
 export { Color } from "./color";
 export { Column } from "./column";
 export { Columns } from "./columns";

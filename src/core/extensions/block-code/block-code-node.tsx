@@ -1,3 +1,4 @@
+import "./index.css";
 import { isEqual } from "@react-hookz/deep-equal";
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
 import { Check, ChevronsUpDown } from "lucide-react";
@@ -14,7 +15,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-const CodeBlockNode = memo(
+export const BlockCodeNode = memo(
   ({ node: { attrs }, updateAttributes, extension }: any) => {
     const { language: defaultLanguage } = attrs;
     const [value, setValue] = useState("auto");
@@ -91,5 +92,3 @@ const CodeBlockNode = memo(
     return isEqual(prevProps, nextProps);
   },
 );
-
-export default CodeBlockNode;

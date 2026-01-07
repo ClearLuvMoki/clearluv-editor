@@ -1,9 +1,9 @@
+import "./index.css";
 import type { Editor } from "@tiptap/react";
 import { useHover } from "ahooks";
-import { Dot, Grip, GripHorizontal, GripIcon } from "lucide-react";
+import { Dot, GripHorizontal } from "lucide-react";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
-import { ColorAction } from "@/components/drag-context-menu/color-action";
-import { TableAlignMenu } from "@/components/table-cell-handle-menu/table-align-menu";
+import { DropdownColor } from "@/components/drop-menu/color";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +14,7 @@ import { useTableClearRowColumnContent } from "@/hooks/use-table-clear-row-colum
 import { useTableMergeSplitCell } from "@/hooks/use-tableMerge-split-cell";
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
 import { cn } from "@/lib/utils";
+import { TableAlignMenu } from "./table-align-menu";
 
 interface TableAction {
   icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
@@ -24,9 +25,6 @@ interface TableAction {
   shortcutBadge?: React.ReactNode;
 }
 
-/**
- * Hook to manage all table actions and their availability
- */
 function useTableActions() {
   const mergeCellAction = useTableMergeSplitCell({ action: "merge" });
   const splitCellAction = useTableMergeSplitCell({ action: "split" });
@@ -60,9 +58,6 @@ function useTableActions() {
   };
 }
 
-/**
- * Hook to manage table handle menu state and interactions
- */
 function useTableCellHandleMenu({ editor }: { editor: Editor | null }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -112,7 +107,7 @@ const TableActionMenu = ({ onClose }: { onClose: () => void }) => {
     <DropdownMenuContent>
       {mergeAction.isAvailable && <TableActionItem action={mergeAction} />}
       {splitAction.isAvailable && <TableActionItem action={splitAction} />}
-      <ColorAction />
+      <DropdownColor />
       <TableAlignMenu />
       {clearAction.isAvailable && <TableActionItem action={clearAction} />}
     </DropdownMenuContent>
@@ -144,7 +139,7 @@ export const TableCellHandleMenu = forwardRef<HTMLButtonElement, TableCellHandle
             ref={btnRef}
             className={cn("table-expandable-menu-button", isMenuOpen && "menu-opened", className)}
           >
-            {isHovered ? <GripHorizontal /> : <Dot />}
+            {isHovered ? <GripHorizontal size={16} style={{ fontSize: 16 }} /> : <Dot />}
           </div>
         </DropdownMenuTrigger>
         <TableActionMenu onClose={closeMenu} />
