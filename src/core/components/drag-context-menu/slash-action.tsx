@@ -32,7 +32,6 @@ export function SlashAction({
 
   const handleClick = useCallback(
     (event: MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      console.log(1212);
       if (event.defaultPrevented) return;
       handleSlashCommand();
     },

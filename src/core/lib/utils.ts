@@ -1,7 +1,14 @@
-import { type Editor, findParentNodeClosestToPos, type NodeWithPos } from "@tiptap/core";
-import type { Level } from "@tiptap/extension-heading";
+import {
+  type Editor,
+  findParentNodeClosestToPos,
+  isNodeSelection,
+  isTextSelection,
+  type NodeWithPos,
+  posToDOMRect,
+} from "@tiptap/core";
+
 import type { Node as PMNode, Node as TiptapNode } from "@tiptap/pm/model";
-import { NodeSelection, TextSelection, type Transaction } from "@tiptap/pm/state";
+import { NodeSelection, Selection, TextSelection, type Transaction } from "@tiptap/pm/state";
 import { type ClassValue, clsx } from "clsx";
 import { CellSelection, cellAround } from "prosemirror-tables";
 import { twMerge } from "tailwind-merge";
@@ -10,6 +17,8 @@ import type { ListType } from "@/extensions/bullet-list";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export function isNodeInSchema(nodeName: string, editor: Editor | null) {
   if (!editor?.schema) return false;
@@ -357,164 +366,6 @@ export function toggleList(editor: Editor | null, type: ListType): boolean {
   }
 }
 
-export function canToggleBlockquote(editor: Editor | null, turnInto: boolean = true): boolean {
-  if (!editor || !editor.isEditable) return false;
-  if (!isNodeInSchema("blockquote", editor) || isNodeTypeSelected(editor, ["image"])) return false;
-
-  if (!turnInto) {
-    return editor.can().toggleWrap("blockquote");
-  }
-
-  try {
-    const view = editor.view;
-    const state = view.state;
-    const selection = state.selection;
-
-    if (selection.empty || selection instanceof TextSelection) {
-      const pos = findNodePosition({
-        editor,
-        node: state.selection.$anchor.node(1),
-      })?.pos;
-      if (!isValidPosition(pos)) return false;
-    }
-
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export function toggleBlockquote(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false;
-  if (!canToggleBlockquote(editor)) return false;
-
-  try {
-    const view = editor.view;
-    let state = view.state;
-    let tr = state.tr;
-
-    // No selection, find the the cursor position
-    if (state.selection.empty || state.selection instanceof TextSelection) {
-      const pos = findNodePosition({
-        editor,
-        node: state.selection.$anchor.node(1),
-      })?.pos;
-      if (!isValidPosition(pos)) return false;
-
-      tr = tr.setSelection(NodeSelection.create(state.doc, pos));
-      view.dispatch(tr);
-      state = view.state;
-    }
-
-    const selection = state.selection;
-
-    let chain = editor.chain().focus();
-
-    // Handle NodeSelection
-    if (selection instanceof NodeSelection) {
-      const firstChild = selection.node.firstChild?.firstChild;
-      const lastChild = selection.node.lastChild?.lastChild;
-
-      const from = firstChild ? selection.from + firstChild.nodeSize : selection.from + 1;
-
-      const to = lastChild ? selection.to - lastChild.nodeSize : selection.to - 1;
-
-      chain = chain.setTextSelection({ from, to }).clearNodes();
-    }
-
-    const toggle = editor.isActive("blockquote")
-      ? chain.lift("blockquote")
-      : chain.wrapIn("blockquote");
-
-    toggle.run();
-
-    editor.chain().focus().selectTextblockEnd().run();
-
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export function canToggleCodeBlock(editor: Editor | null, turnInto: boolean = true): boolean {
-  if (!editor || !editor.isEditable) return false;
-  if (!isNodeInSchema("codeBlock", editor) || isNodeTypeSelected(editor, ["image"])) return false;
-
-  if (!turnInto) {
-    return editor.can().toggleNode("codeBlock", "paragraph");
-  }
-
-  try {
-    const view = editor.view;
-    const state = view.state;
-    const selection = state.selection;
-
-    if (selection.empty || selection instanceof TextSelection) {
-      const pos = findNodePosition({
-        editor,
-        node: state.selection.$anchor.node(1),
-      })?.pos;
-      if (!isValidPosition(pos)) return false;
-    }
-
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export function toggleCodeBlock(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false;
-  if (!canToggleCodeBlock(editor)) return false;
-
-  try {
-    const view = editor.view;
-    let state = view.state;
-    let tr = state.tr;
-
-    // No selection, find the the cursor position
-    if (state.selection.empty || state.selection instanceof TextSelection) {
-      const pos = findNodePosition({
-        editor,
-        node: state.selection.$anchor.node(1),
-      })?.pos;
-      if (!isValidPosition(pos)) return false;
-
-      tr = tr.setSelection(NodeSelection.create(state.doc, pos));
-      view.dispatch(tr);
-      state = view.state;
-    }
-
-    const selection = state.selection;
-
-    let chain = editor.chain().focus();
-
-    // Handle NodeSelection
-    if (selection instanceof NodeSelection) {
-      const firstChild = selection.node.firstChild?.firstChild;
-      const lastChild = selection.node.lastChild?.lastChild;
-
-      const from = firstChild ? selection.from + firstChild.nodeSize : selection.from + 1;
-
-      const to = lastChild ? selection.to - lastChild.nodeSize : selection.to - 1;
-
-      chain = chain.setTextSelection({ from, to }).clearNodes();
-    }
-
-    const toggle = editor.isActive("codeBlock")
-      ? chain.setNode("paragraph")
-      : chain.toggleNode("codeBlock", "paragraph");
-
-    toggle.run();
-
-    editor.chain().focus().selectTextblockEnd().run();
-
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 export function canDuplicateNode(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false;
 
@@ -811,4 +662,159 @@ export function getSelectedNodesOfType(
   }
 
   return results;
+}
+
+export const isSelectionValid = (
+  editor: Editor | null,
+  selection?: any,
+  excludedNodeTypes: string[] = ["imageUpload", "horizontalRule"],
+): boolean => {
+  if (!editor) return false;
+  if (!selection) selection = editor.state.selection;
+
+  const { state } = editor;
+  const { doc } = state;
+  const { empty, from, to } = selection;
+
+  const isEmptyTextBlock = !doc.textBetween(from, to).length && isTextSelection(selection);
+  const isCodeBlock =
+    selection.$from.parent.type.spec.code ||
+    (isNodeSelection(selection) && selection.node.type.spec.code);
+  const isExcludedNode =
+    isNodeSelection(selection) && excludedNodeTypes.includes(selection.node.type.name);
+  const isTableCell = selection instanceof CellSelection;
+
+  return !empty && !isEmptyTextBlock && !isCodeBlock && !isExcludedNode && !isTableCell;
+};
+
+export const getSelectionBoundingRect = (editor: Editor): DOMRect | null => {
+  const { state } = editor.view;
+  const { selection } = state;
+  const { ranges } = selection;
+
+  const from = Math.min(...ranges.map((range) => range.$from.pos));
+  const to = Math.max(...ranges.map((range) => range.$to.pos));
+
+  if (isNodeSelection(selection)) {
+    const node = editor.view.nodeDOM(from) as HTMLElement;
+    if (node) {
+      return node.getBoundingClientRect();
+    }
+  }
+
+  return posToDOMRect(editor.view, from, to);
+};
+
+export const isElementWithinEditor = (editor: Editor | null, element: Node | null) => {
+  if (!element || !editor) {
+    return false;
+  }
+
+  const editorWrapper = editor.view.dom.parentElement;
+  const editorDom = editor.view.dom;
+
+  if (!editorWrapper) {
+    return false;
+  }
+
+  return editorWrapper === element || editorDom === element || editorWrapper.contains(element);
+};
+
+type ProtocolOptions = {
+  /**
+   * The protocol scheme to be registered.
+   * @default '''
+   * @example 'ftp'
+   * @example 'git'
+   */
+  scheme: string;
+
+  /**
+   * If enabled, it allows optional slashes after the protocol.
+   * @default false
+   * @example true
+   */
+  optionalSlashes?: boolean;
+};
+
+type ProtocolConfig = Array<ProtocolOptions | string>;
+
+const ATTR_WHITESPACE =
+  // biome-ignore lint/suspicious/noControlCharactersInRegex: <ignore error>
+  /[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g;
+
+export function isAllowedUri(uri: string | undefined, protocols?: ProtocolConfig) {
+  const allowedProtocols: string[] = [
+    "http",
+    "https",
+    "ftp",
+    "ftps",
+    "mailto",
+    "tel",
+    "callto",
+    "sms",
+    "cid",
+    "xmpp",
+  ];
+
+  if (protocols) {
+    protocols.forEach((protocol) => {
+      const nextProtocol = typeof protocol === "string" ? protocol : protocol.scheme;
+
+      if (nextProtocol) {
+        allowedProtocols.push(nextProtocol);
+      }
+    });
+  }
+
+  return (
+    !uri ||
+    uri.replace(ATTR_WHITESPACE, "").match(
+      new RegExp(
+        // eslint-disable-next-line no-useless-escape
+        `^(?:(?:${allowedProtocols.join("|")}):|[^a-z]|[a-z0-9+.\-]+(?:[^a-z+.\-:]|$))`,
+        "i",
+      ),
+    )
+  );
+}
+
+export function sanitizeUrl(inputUrl: string, baseUrl: string, protocols?: any): string {
+  try {
+    const url = new URL(inputUrl, baseUrl);
+
+    if (isAllowedUri(url.href, protocols)) {
+      return url.href;
+    }
+  } catch {
+    // If URL creation fails, it's considered invalid
+  }
+  return "#";
+}
+
+export function focusNextNode(editor: Editor) {
+  const { state, view } = editor;
+  const { doc, selection } = state;
+
+  const nextSel = (Selection as any).findFrom(selection.$to, 1, true);
+  if (nextSel) {
+    view.dispatch(state.tr.setSelection(nextSel).scrollIntoView());
+    return true;
+  }
+
+  const paragraphType = state.schema.nodes.paragraph;
+  if (!paragraphType) {
+    console.warn("No paragraph node type found in schema.");
+    return false;
+  }
+
+  const end = doc.content.size;
+  const para = paragraphType.create();
+  let tr = state.tr.insert(end, para);
+
+  // Place the selection inside the new paragraph
+  const $inside = tr.doc.resolve(end + 1);
+  tr = tr.setSelection(TextSelection.near($inside)).scrollIntoView();
+  view.dispatch(tr);
+  return true;
 }

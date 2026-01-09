@@ -1,0 +1,95 @@
+:root {
+  --toolbar-height: 2.75rem;
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --toolbar-bg-color: var(--white);
+  --toolbar-border-color: var(--gray-light-a-100);
+}
+
+.dark {
+  --toolbar-bg-color: var(--black);
+  --toolbar-border-color: var(--gray-dark-a-50);
+}
+
+.tiptap-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  &-group {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+
+    &:empty {
+      display: none;
+    }
+
+    &:empty + .tiptap-separator,
+    .tiptap-separator + &:empty {
+      display: none;
+    }
+  }
+
+  &[data-variant="fixed"] {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    min-height: var(--toolbar-height);
+    background: var(--toolbar-bg-color);
+    border-bottom: 1px solid var(--toolbar-border-color);
+    padding: 0 0.5rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      position: absolute;
+      top: auto;
+      height: calc(var(--toolbar-height) + var(--safe-area-bottom));
+      border-top: 1px solid var(--toolbar-border-color);
+      border-bottom: none;
+      padding: 0 0.5rem var(--safe-area-bottom);
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+
+      .tiptap-toolbar-group {
+        flex: 0 0 auto;
+      }
+    }
+  }
+
+  &[data-variant="floating"] {
+    --toolbar-padding: 0.125rem;
+    --toolbar-border-width: 1px;
+
+    padding: 0.188rem;
+    border-radius: calc(var(--toolbar-padding) + var(--radius-lg) + var(--toolbar-border-width));
+    border: var(--toolbar-border-width) solid var(--toolbar-border-color);
+    background-color: var(--toolbar-bg-color);
+    box-shadow: var(--shadow-elevated-md);
+    outline: none;
+    overflow: hidden;
+
+    &[data-plain="true"] {
+      padding: 0;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
+    }
+
+    @media screen and (max-width: 480px) {
+      width: 100%;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+    }
+  }
+}

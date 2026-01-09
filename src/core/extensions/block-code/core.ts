@@ -1,12 +1,12 @@
 import { type Editor, findParentNode } from "@tiptap/core";
 import BuiltInCodeBlock from "@tiptap/extension-code-block";
-import { TextSelection } from "@tiptap/pm/state";
+import { NodeSelection, TextSelection } from "@tiptap/pm/state";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import { all, createLowlight } from "lowlight";
 import { Braces } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
-import { canToggleCodeBlock, isNodeInSchema, toggleCodeBlock } from "@/lib/utils";
+import { findNodePosition, isNodeInSchema, isNodeTypeSelected, isValidPosition } from "@/lib/utils";
 import { LowlightPlugin } from "@/plugin/lowlight";
 import { BlockCodeNode } from "./block-code-node";
 
@@ -16,6 +16,85 @@ interface CodeBlockLowlightOptions {
   lowlight: any;
   defaultLanguage: string;
   maxHighlightLineNumber?: number;
+}
+
+export function toggleCodeBlock(editor: Editor | null): boolean {
+  if (!editor || !editor.isEditable) return false;
+  if (!canToggleCodeBlock(editor)) return false;
+
+  try {
+    const view = editor.view;
+    let state = view.state;
+    let tr = state.tr;
+
+    // No selection, find the the cursor position
+    if (state.selection.empty || state.selection instanceof TextSelection) {
+      const pos = findNodePosition({
+        editor,
+        node: state.selection.$anchor.node(1),
+      })?.pos;
+      if (!isValidPosition(pos)) return false;
+
+      tr = tr.setSelection(NodeSelection.create(state.doc, pos));
+      view.dispatch(tr);
+      state = view.state;
+    }
+
+    const selection = state.selection;
+
+    let chain = editor.chain().focus();
+
+    // Handle NodeSelection
+    if (selection instanceof NodeSelection) {
+      const firstChild = selection.node.firstChild?.firstChild;
+      const lastChild = selection.node.lastChild?.lastChild;
+
+      const from = firstChild ? selection.from + firstChild.nodeSize : selection.from + 1;
+
+      const to = lastChild ? selection.to - lastChild.nodeSize : selection.to - 1;
+
+      chain = chain.setTextSelection({ from, to }).clearNodes();
+    }
+
+    const toggle = editor.isActive("codeBlock")
+      ? chain.setNode("paragraph")
+      : chain.toggleNode("codeBlock", "paragraph");
+
+    toggle.run();
+
+    editor.chain().focus().selectTextblockEnd().run();
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function canToggleCodeBlock(editor: Editor | null, turnInto: boolean = true): boolean {
+  if (!editor || !editor.isEditable) return false;
+  if (!isNodeInSchema("codeBlock", editor) || isNodeTypeSelected(editor, ["image"])) return false;
+
+  if (!turnInto) {
+    return editor.can().toggleNode("codeBlock", "paragraph");
+  }
+
+  try {
+    const view = editor.view;
+    const state = view.state;
+    const selection = state.selection;
+
+    if (selection.empty || selection instanceof TextSelection) {
+      const pos = findNodePosition({
+        editor,
+        node: state.selection.$anchor.node(1),
+      })?.pos;
+      if (!isValidPosition(pos)) return false;
+    }
+
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export const BlockCode = BuiltInCodeBlock.extend<CodeBlockLowlightOptions>({

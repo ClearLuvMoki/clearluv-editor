@@ -18,6 +18,8 @@ export { Heading } from "./heading";
 export { Highlight } from "./highlight";
 export { History } from "./history";
 export { HorizontalRule } from "./horizontal-rule";
+export { Image } from "./image";
+export { ImageUploadNode } from "./image-upload";
 export { Italic } from "./italic";
 export { Link } from "./link";
 export { Markdown } from "./markdown";
@@ -29,9 +31,6 @@ export { Slash } from "./slash";
 export { Strike } from "./strike";
 export { Subscript } from "./subscript";
 export { Superscript } from "./superscript";
-// export {Image} from "./image"
-// export {ImageBlock} from "./image-block"
-// export {ImageUpload} from "./image-upload"
 export { TableKit } from "./table";
 export { TableHandleExtension } from "./table-handle";
 // export { TableCell } from "./table-cell";

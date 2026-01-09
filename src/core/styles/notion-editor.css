@@ -13,22 +13,5 @@
     > p:first-child {
       margin: 0;
     }
-
-    .is-empty:not([data-type="columns"])::before {
-      content: attr(data-placeholder);
-      float: left;
-      height: 0;
-      pointer-events: none;
-      width: 100%;
-      color: rgb(0, 0, 0, 0.4);
-      font-style: italic;
-    }
-
-    /* slash 的占位 */
-
-    .ProseMirror-selectednode {
-      border-radius: 6px;
-      background-color: rgba(122, 82, 255, 0.2);
-    }
   }
 }

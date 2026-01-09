@@ -69,7 +69,6 @@ export function SuggestionMenu({
                 ? Math.min(maxHeight, availableHeight)
                 : availableHeight;
 
-              console.log(maxHeightValue, "maxHeightValue");
               elements.floating.style.setProperty(
                 "--suggestion-menu-max-height",
                 `${maxHeightValue}px`,

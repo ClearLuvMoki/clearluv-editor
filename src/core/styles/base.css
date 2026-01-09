@@ -176,6 +176,15 @@
   --destructive-contrast: 8%;
   --foreground-contrast: 8%;
 
+  --selection-color: rgba(157, 138, 255, 0.2);
+
+  --checklist-bg-color: var(--gray-light-a-100);
+  --checklist-bg-active-color: var(--gray-light-a-900);
+  --checklist-border-color: var(--gray-light-a-200);
+  --checklist-border-active-color: var(--gray-light-a-900);
+  --checklist-check-icon-color: var(--white);
+  --checklist-text-active: var(--gray-light-a-500);
+
   &,
   *,
   ::before,
@@ -205,4 +214,5 @@
   --color-highlight-brown: rgb(244, 238, 238);
   --color-highlight-orange: rgb(251, 236, 221);
   --color-highlight-pink: rgb(252, 241, 246);
+  --selection-color: rgba(122, 82, 255, 0.2);
 }
